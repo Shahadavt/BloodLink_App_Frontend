@@ -1,0 +1,132 @@
+﻿<div class="dashboard-page">
+  <div class="dashboard-container">
+    <div class="dashboard-grid">
+      <!-- Profile Card -->
+      <div class="profile-card card">
+        <div class="profile-header">
+          <div class="avatar">{{ getCleanName().charAt(0) }}</div>
+          <div class="profile-info">
+            <h3>{{ getCleanName() }}</h3>
+            <p class="text-muted">{{ userRole }}</p>
+          </div>
+        </div>
+        <div class="blood-group-badge">
+          <mat-icon>bloodtype</mat-icon>
+          {{ userBloodGroup || 'Not available' }}
+        </div>
+        <div class="quick-actions">
+          <button *ngIf="userRole === 'REQUESTER'" class="btn btn-secondary w-100" (click)="goToRequest()">
+            <mat-icon>add_circle</mat-icon>
+            Create request
+          </button>
+          <button *ngIf="userRole === 'DONOR'" class="btn btn-secondary w-100" (click)="goToList()">
+            <mat-icon>search</mat-icon>
+            Browse requests
+          </button>
+          <button *ngIf="userRole === 'DONOR' || userRole === 'REQUESTER'" class="btn btn-secondary w-100" (click)="goToProfile()">
+            <mat-icon>person</mat-icon>
+            My profile
+          </button>
+          <button *ngIf="userRole === 'ADMIN'" class="btn btn-secondary w-100" (click)="goToUsers()">
+            <mat-icon>people</mat-icon>
+            Manage users
+          </button>
+          <button *ngIf="userRole !== 'ADMIN'" class="btn btn-secondary w-100" (click)="goToMyBoard()">
+            <mat-icon>list_alt</mat-icon>
+            My board
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-card card" *ngFor="let stat of getStats()">
+            <div class="stat-header">
+              <div class="stat-icon-wrapper" [style.background]="stat.accent === 'red' ? 'var(--primary-light)' : stat.accent === 'green' ? 'var(--success-light)' : stat.accent === 'blue' ? '#DBEAFE' : 'var(--warning-light)'">
+                <mat-icon [style.color]="stat.accent === 'red' ? 'var(--primary)' : stat.accent === 'green' ? 'var(--success)' : stat.accent === 'blue' ? '#2563EB' : 'var(--warning)'">{{ stat.icon }}</mat-icon>
+              </div>
+              <p class="stat-label">{{ stat.label }}</p>
+            </div>
+            <h2 class="stat-value">{{ stat.value }}</h2>
+            <div class="stat-progress">
+              <div class="progress-track">
+                <div class="progress-fill" [style.width.%]="stat.progress" [style.background]="stat.accent === 'red' ? 'var(--primary)' : stat.accent === 'green' ? 'var(--success)' : stat.accent === 'blue' ? '#2563EB' : 'var(--warning)'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-bottom">
+      <!-- Blood Group Demand -->
+      <div class="demand-card card">
+        <div class="card-header">
+          <div>
+            <h4>Blood group demand</h4>
+            <p class="text-muted">Current demand by blood type</p>
+          </div>
+          <span class="badge badge-success">Live</span>
+        </div>
+        <div class="demand-list">
+          <div class="demand-item" *ngFor="let group of bloodGroupData">
+            <div class="demand-info">
+              <span class="blood-badge" [style.background]="group.bgColor" [style.color]="group.color">{{ group.group }}</span>
+              <span class="text-muted">{{ group.count }} request{{ group.count !== 1 ? 's' : '' }}</span>
+            </div>
+            <div class="demand-bar">
+              <div class="bar-fill" [style.width.%]="getBarWidth(group.count)" [style.background]="group.color"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Requests -->
+      <div class="requests-card card">
+        <div class="card-header">
+          <div>
+            <h4>Recent requests</h4>
+            <p class="text-muted">Latest updates from the network</p>
+          </div>
+          <span class="badge badge-primary">Latest</span>
+        </div>
+
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading requests...</p>
+        </div>
+
+        <div *ngIf="!loading && recentRequests.length === 0" class="empty-state">
+          <mat-icon class="empty-icon">volunteer_activism</mat-icon>
+          <h4>No requests found</h4>
+          <p>There are no blood requests in the system yet.</p>
+        </div>
+
+        <div *ngIf="!loading && recentRequests.length > 0" class="requests-list">
+          <div class="request-item" *ngFor="let request of recentRequests">
+            <div class="request-header">
+              <div class="request-info">
+                <h5>{{ request.patientName }}</h5>
+                <p class="text-muted">{{ request.hospital }}</p>
+              </div>
+              <span class="badge" [ngClass]="request.status === 'OPEN' ? 'badge-danger' : request.status === 'ACCEPTED' ? 'badge-warning' : request.status === 'COMPLETED' ? 'badge-success' : 'badge-secondary'">{{ request.status }}</span>
+            </div>
+            <div class="request-footer">
+              <div class="request-details">
+                <span class="detail">
+                  <mat-icon>location_on</mat-icon>
+                  {{ request.city }}
+                </span>
+                <span class="detail blood-group">
+                  <mat-icon>bloodtype</mat-icon>
+                  {{ request.bloodGroup }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+<div class="scheduling-page">
+  <div class="page-shell">
+    <div class="page-header">
+      <div>
+        <h2>Donation Scheduling</h2>
+        <p class="text-muted">Book your blood donation appointments</p>
+      </div>
+      <div class="header-actions">
+        <button class="secondary-btn" (click)="goToDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button class="primary-btn" (click)="showBookingFormToggle()">
+          <mat-icon>add</mat-icon>
+          Book Appointment
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading appointments...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading" class="scheduling-content">
+      <!-- Booking Form -->
+      <div *ngIf="showBookingForm" class="card-surface booking-form">
+        <div class="form-header">
+          <h4>Book New Appointment</h4>
+          <button class="close-btn" (click)="showBookingFormToggle()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <div class="form-body">
+          <div class="form-group">
+            <label for="search">Search Blood Requests (Optional)</label>
+            <input id="search" type="text" [(ngModel)]="searchQuery" placeholder="Filter by patient name, blood group, hospital, city..." class="form-control">
+          </div>
+          
+          <div class="blood-requests-list">
+            <div *ngIf="bloodRequests.length === 0" class="no-requests">
+              <p>No blood requests available at the moment.</p>
+            </div>
+            
+            <div *ngFor="let request of bloodRequests" 
+                 class="blood-request-card" 
+                 [class.hidden]="searchQuery && !isRequestMatch(request, searchQuery)"
+                 [class.selected]="selectedRequestId === request.id"
+                 (click)="selectedRequestId = request.id">
+              <div class="request-header">
+                <div class="patient-info">
+                  <span class="patient-name">{{ request.patientName }}</span>
+                  <span class="blood-group-badge">{{ request.bloodGroup }}</span>
+                </div>
+                <span class="urgency-badge" [ngClass]="getUrgencyClass(request.urgency)">{{ request.urgency }}</span>
+              </div>
+              <div class="request-details">
+                <div class="detail-item">
+                  <mat-icon>local_hospital</mat-icon>
+                  <span>{{ request.hospital }}</span>
+                </div>
+                <div class="detail-item">
+                  <mat-icon>location_on</mat-icon>
+                  <span>{{ request.city }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Select Date</label>
+            <input id="date" type="date" [(ngModel)]="newAppointment.date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="time">Select Time</label>
+            <select id="time" [(ngModel)]="newAppointment.time" class="form-control">
+              <option value="">Select time slot</option>
+              <option *ngFor="let slot of availableTimeSlots" [value]="slot">{{ slot }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="center">Blood Center</label>
+            <select id="center" [(ngModel)]="newAppointment.bloodCenter" class="form-control">
+              <option value="">Select blood center</option>
+              <option *ngFor="let center of bloodCenters" [value]="center">{{ center }}</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button class="secondary-btn" (click)="showBookingFormToggle()">Cancel</button>
+            <button class="primary-btn" (click)="bookAppointment()">Book Appointment</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointments List -->
+      <div class="card-surface appointments-card">
+        <div class="card-header">
+          <h4>Your Appointments</h4>
+          <span class="badge">{{ appointments.length }} appointment{{ appointments.length !== 1 ? 's' : '' }}</span>
+        </div>
+
+        <div *ngIf="appointments.length === 0" class="empty-state">
+          <mat-icon>event_busy</mat-icon>
+          <h4>No appointments scheduled</h4>
+          <p>Book your first blood donation appointment to get started.</p>
+          <button class="primary-btn" (click)="showBookingFormToggle()">
+            <mat-icon>add</mat-icon>
+            Book Appointment
+          </button>
+        </div>
+
+        <div *ngIf="appointments.length > 0" class="appointments-list">
+          <div class="appointment-item" *ngFor="let appointment of appointments">
+            <div class="appointment-header">
+              <div class="appointment-info">
+                <h5>{{ appointment.bloodCenter }}</h5>
+                <p class="text-muted">{{ appointment.date }} at {{ appointment.time }}</p>
+              </div>
+              <span class="status-badge" [ngClass]="getStatusClass(appointment.status)">
+                {{ appointment.status }}
+              </span>
+            </div>
+            <div class="appointment-actions">
+              <button *ngIf="appointment.status === 'SCHEDULED' && appointment.id" class="btn btn-danger btn-sm" (click)="cancelAppointment(appointment.id)">
+                <mat-icon>cancel</mat-icon>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

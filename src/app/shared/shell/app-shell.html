@@ -1,0 +1,69 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand-block">
+      <div class="brand-mark">🩸</div>
+      <div>
+        <h1>BloodLink</h1>
+        <p>Blood donation system</p>
+      </div>
+    </div>
+
+    <nav class="nav-list">
+      <a
+        *ngFor="let item of visibleNavItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="user-profile-card">
+      <div class="user-profile-header">
+        <div class="user-avatar">{{ userName.charAt(0).toUpperCase() }}</div>
+        <div class="user-info">
+          <h3>{{ userName }}</h3>
+          <p>{{ userRole.toLowerCase() }}</p>
+        </div>
+      </div>
+      <span class="user-role-badge">{{ userRole }}</span>
+      <button type="button" class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div class="topbar-content">
+        <div class="topbar-icon">
+          <mat-icon>dashboard</mat-icon>
+        </div>
+        <div class="topbar-text">
+          <h2>Dashboard</h2>
+          <p>Welcome back, {{ userName }}</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-pill">
+          <mat-icon>notifications</mat-icon>
+          Live
+        </div>
+        <div class="topbar-pill muted">
+          <mat-icon>lock</mat-icon>
+          Secure
+        </div>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <app-toast></app-toast>
+  <app-confirm-dialog></app-confirm-dialog>
+</div>

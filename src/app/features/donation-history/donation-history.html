@@ -1,0 +1,90 @@
+<div class="donation-history-page">
+  <div class="page-shell">
+    <div class="page-header">
+      <div>
+        <h2>Donation History</h2>
+        <p class="text-muted">Track your blood donation contributions</p>
+      </div>
+      <div class="header-actions">
+        <button class="secondary-btn" (click)="goToDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button class="primary-btn" (click)="goToProfile()">
+          <mat-icon>person</mat-icon>
+          My Profile
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading donation history...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && !errorMessage" class="history-content">
+      <div *ngIf="donations.length === 0" class="empty-state">
+        <mat-icon>volunteer_activism</mat-icon>
+        <h3>No donations yet</h3>
+        <p>You haven't made any blood donations yet. Start by browsing matching requests!</p>
+        <button class="primary-btn" (click)="goToBrowseRequests()">
+          <mat-icon>search</mat-icon>
+          Find Requests
+        </button>
+      </div>
+
+      <div *ngIf="donations.length > 0" class="donations-list">
+        <div class="card-surface donation-card" *ngFor="let donation of donations">
+          <div class="donation-header">
+            <div class="blood-group-badge" [ngClass]="getBloodGroupClass(donation.bloodGroup)">{{ donation.bloodGroup }}</div>
+            <span class="status-badge" [ngClass]="getStatusBadgeClass(donation.status)">
+              {{ donation.status }}
+            </span>
+          </div>
+          <div class="donation-details">
+            <div class="detail-item">
+              <mat-icon>person</mat-icon>
+              <div>
+                <label>Patient Name</label>
+                <span>{{ donation.patientName }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <mat-icon>local_hospital</mat-icon>
+              <div>
+                <label>Hospital</label>
+                <span>{{ donation.hospital }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <mat-icon>location_on</mat-icon>
+              <div>
+                <label>City</label>
+                <span>{{ donation.city }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <mat-icon>bloodtype</mat-icon>
+              <div>
+                <label>Units Required</label>
+                <span>{{ donation.unitsRequired }}</span>
+              </div>
+            </div>
+            <div class="detail-item" *ngIf="donation.contactNumber">
+              <mat-icon>phone</mat-icon>
+              <div>
+                <label>Contact</label>
+                <span>{{ donation.contactNumber }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

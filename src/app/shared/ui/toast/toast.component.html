@@ -1,0 +1,11 @@
+<div class="toast-container">
+  <div *ngFor="let toast of toasts" 
+       class="toast toast-{{ toast.type }} fade-in"
+       [style.animation-duration]="'0.3s'">
+    <mat-icon class="toast-icon" [style.color]="getIconColor(toast.type)">{{ getIcon(toast.type) }}</mat-icon>
+    <span class="toast-message">{{ toast.message }}</span>
+    <button class="toast-close" (click)="removeToast(toast.id)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

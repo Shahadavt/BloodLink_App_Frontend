@@ -1,0 +1,15 @@
+<div class="confirm-dialog-overlay" *ngIf="visible" (click)="cancel()">
+  <div class="confirm-dialog" (click)="$event.stopPropagation()">
+    <div class="confirm-dialog-header">
+      <mat-icon class="confirm-dialog-icon" [style.color]="getIconColor()">{{ getIcon() }}</mat-icon>
+      <h3 class="confirm-dialog-title">{{ data.title }}</h3>
+    </div>
+    <div class="confirm-dialog-body">
+      <p class="confirm-dialog-message">{{ data.message }}</p>
+    </div>
+    <div class="confirm-dialog-footer">
+      <button class="btn btn-secondary" (click)="cancel()">{{ data.cancelText }}</button>
+      <button class="btn" [ngClass]="getConfirmButtonClass()" (click)="confirm()">{{ data.confirmText }}</button>
+    </div>
+  </div>
+</div>

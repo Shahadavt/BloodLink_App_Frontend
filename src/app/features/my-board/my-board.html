@@ -1,0 +1,83 @@
+<div class="board-page">
+  <div class="board-container">
+    <div class="board-header">
+      <div>
+        <h2>My Board</h2>
+        <p class="text-muted">Track your requests, follow-ups, and completions</p>
+      </div>
+      <button class="btn btn-secondary" (click)="backToDashboard()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to dashboard
+      </button>
+    </div>
+
+    <div class="summary-card card">
+      <div class="summary-content">
+        <div>
+          <h4>Active requests</h4>
+          <p class="text-muted">Your current board activity</p>
+        </div>
+        <span class="badge badge-primary">{{ myRequests.length }} entries</span>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="card loading-state">
+      <div class="spinner"></div>
+      <p>Loading your requests...</p>
+    </div>
+
+    <div class="card table-card" *ngIf="!loading && myRequests.length > 0">
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Hospital</th>
+              <th>Blood Group</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of myRequests">
+              <td>
+                <div class="person-cell">
+                  <div class="avatar">{{ request.patientName ? request.patientName[0].toUpperCase() : 'P' }}</div>
+                  <span>{{ request.patientName }}</span>
+                </div>
+              </td>
+              <td>{{ request.hospital }}</td>
+              <td><span class="badge" [ngClass]="getBloodGroupClass(request.bloodGroup)">{{ request.bloodGroup }}</span></td>
+              <td>{{ request.city }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="request.status === 'OPEN' ? 'status-open' : request.status === 'ACCEPTED' ? 'status-accepted' : request.status === 'COMPLETED' ? 'status-completed' : 'status-pending'">{{ request.status }}</span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button *ngIf="request.status === 'OPEN'" class="btn btn-sm btn-success" (click)="closeRequest(request.id)">
+                    <mat-icon>check_circle</mat-icon>
+                    Close
+                  </button>
+                  <button class="btn btn-sm btn-outline" (click)="editRequest(request.id)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteRequest(request.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card empty-state" *ngIf="!loading && myRequests.length === 0">
+      <mat-icon class="empty-icon">assignment</mat-icon>
+      <h4>Your board is clear</h4>
+      <p>You have no active board entries yet.</p>
+      <button class="btn btn-primary" (click)="backToDashboard()">Return to dashboard</button>
+    </div>
+  </div>
+</div>

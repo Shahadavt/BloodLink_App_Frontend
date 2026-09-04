@@ -1,0 +1,350 @@
+:host {
+  display: block;
+}
+
+.donor-profile-page {
+  padding: 0;
+  min-height: 100%;
+  background: var(--secondary);
+}
+
+.page-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.page-header p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  background: var(--danger-light);
+  color: var(--danger);
+  border-radius: var(--radius);
+  border: 1px solid var(--danger);
+}
+
+.profile-content {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.avatar-circle {
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.avatar-circle.large {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-info h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.profile-info p {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.availability-toggle {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 1.75rem;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--border-dark);
+  transition: 0.3s;
+  border-radius: var(--radius-full);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.25rem;
+  width: 1.25rem;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: var(--radius-full);
+}
+
+input:checked + .slider {
+  background-color: var(--success);
+}
+
+input:checked + .slider:before {
+  transform: translateX(1.25rem);
+}
+
+.availability-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.profile-details {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--secondary);
+  border-radius: var(--radius);
+}
+
+.detail-row label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.blood-group-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.active {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.status-badge.inactive {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.profile-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.edit-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.edit-form h4 {
+  margin: 0 0 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    padding: 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .header-actions .btn {
+    width: 100%;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .availability-toggle {
+    margin-left: 0;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .profile-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Blood Group Color Coding */
+.badge-a-plus {
+  background-color: #e3f2fd !important;
+  color: #1976d2 !important;
+  border: 1px solid #90caf9;
+}
+
+.badge-a-minus {
+  background-color: #e8f5e9 !important;
+  color: #388e3c !important;
+  border: 1px solid #a5d6a7;
+}
+
+.badge-b-plus {
+  background-color: #fff3e0 !important;
+  color: #f57c00 !important;
+  border: 1px solid #ffcc80;
+}
+
+.badge-b-minus {
+  background-color: #fce4ec !important;
+  color: #c2185b !important;
+  border: 1px solid #f48fb1;
+}
+
+.badge-ab-plus {
+  background-color: #f3e5f5 !important;
+  color: #7b1fa2 !important;
+  border: 1px solid #ce93d8;
+}
+
+.badge-ab-minus {
+  background-color: #e0f2f1 !important;
+  color: #00796b !important;
+  border: 1px solid #80cbc4;
+}
+
+.badge-o-plus {
+  background-color: #ffebee !important;
+  color: #d32f2f !important;
+  border: 1px solid #ef9a9a;
+}
+
+.badge-o-minus {
+  background-color: #fff8e1 !important;
+  color: #fbc02d !important;
+  border: 1px solid #fff59d;
+}
+
+.badge-danger {
+  background-color: #ffebee !important;
+  color: #d32f2f !important;
+  border: 1px solid #ef9a9a;
+}

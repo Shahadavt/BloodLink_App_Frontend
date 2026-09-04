@@ -1,0 +1,130 @@
+<div class="list-page" *ngIf="{ data: requests$ | async } as requests">
+  <div class="list-container">
+    <div class="list-header">
+      <div>
+        <h2>Active Blood Requests</h2>
+        <p class="text-muted">Browse urgent needs across the network</p>
+      </div>
+      <span class="badge badge-primary">{{ totalResults }} results</span>
+    </div>
+
+    <div class="filter-card card">
+      <div class="filter-grid">
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input class="form-control" type="text" [(ngModel)]="city" (keyup.enter)="search()" placeholder="Enter city">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Blood type</label>
+          <select class="form-control form-select" [(ngModel)]="bloodGroup" (change)="search()">
+            <option value="">All types</option>
+            <option *ngFor="let group of ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']" [value]="group">{{group}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">&nbsp;</label>
+          <div class="filter-buttons">
+            <button class="btn btn-primary" (click)="search()">
+              <mat-icon>search</mat-icon>
+              Apply filters
+            </button>
+            <button class="btn btn-secondary" (click)="resetFilters()">
+              <mat-icon>refresh</mat-icon>
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="card loading-state">
+      <div class="spinner"></div>
+      <p>Searching the database...</p>
+    </div>
+
+    <div class="card table-card" *ngIf="!loading && requests.data && requests.data.length > 0">
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Hospital</th>
+              <th>Blood Group</th>
+              <th>Location</th>
+              <th>Urgency</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of requests.data">
+              <td>
+                <div class="person-cell">
+                  <div class="avatar">{{ r.patientName ? r.patientName[0].toUpperCase() : 'P' }}</div>
+                  <span>{{ r.patientName }}</span>
+                </div>
+              </td>
+              <td>{{ r.hospital }}</td>
+              <td><span class="badge" [ngClass]="getBloodGroupClass(r.bloodGroup)">{{ r.bloodGroup }}</span></td>
+              <td>{{ r.city }}</td>
+              <td>
+                <span class="urgency-badge" [ngClass]="getUrgencyClass(r.urgency)">{{ r.urgency || 'NORMAL' }}</span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="r.status === 'OPEN' ? 'status-open' : r.status === 'ACCEPTED' ? 'status-accepted' : r.status === 'COMPLETED' ? 'status-completed' : 'status-pending'">{{ r.status }}</span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <ng-container *ngIf="getRole() === 'DONOR'">
+                    <button *ngIf="r.status === 'OPEN'" class="btn btn-sm btn-success" (click)="accept(r.id)">
+                      <mat-icon>volunteer_activism</mat-icon>
+                      Help
+                    </button>
+                    <button *ngIf="r.status === 'ACCEPTED'" class="btn btn-sm btn-primary" (click)="close(r.id)">
+                      <mat-icon>check_circle</mat-icon>
+                      Mark done
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="getRole() === 'ADMIN'">
+                    <button *ngIf="r.status === 'OPEN' || r.status === 'ACCEPTED' || r.status === 'PENDING'" class="btn btn-sm btn-primary" (click)="close(r.id)">
+                      <mat-icon>check_circle</mat-icon>
+                      Close
+                    </button>
+                    <button class="btn btn-sm btn-danger admin-delete-btn" (click)="delete(r.id)" title="Admin Delete">
+                      <mat-icon>delete</mat-icon>
+                      <span class="admin-badge">Admin</span>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="getRole() === 'REQUESTER'">
+                    <button *ngIf="r.status === 'OPEN' || r.status === 'PENDING'" class="btn btn-sm btn-danger" (click)="delete(r.id)" title="Delete My Request">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card empty-state" *ngIf="!loading && (!requests.data || requests.data.length === 0)">
+      <mat-icon class="empty-icon">search</mat-icon>
+      <h4>No blood requests found</h4>
+      <p>Try broadening your filters or check again soon.</p>
+      <button class="btn btn-primary" (click)="resetFilters()">Show all requests</button>
+    </div>
+
+    <div class="pagination" *ngIf="!loading && totalPages > 1">
+      <button class="btn btn-secondary" [disabled]="page === 0" (click)="prev()">
+        <mat-icon>chevron_left</mat-icon>
+        Previous
+      </button>
+      <span class="pagination-info">Page {{ page + 1 }} of {{ totalPages }}</span>
+      <button class="btn btn-secondary" [disabled]="page >= totalPages - 1" (click)="next()">
+        Next
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

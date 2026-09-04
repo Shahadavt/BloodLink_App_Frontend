@@ -1,0 +1,76 @@
+<div class="appointments-page">
+  <div class="page-shell">
+    <div class="page-header">
+      <div>
+        <h2>Appointment Management</h2>
+        <p class="text-muted">Manage all donor appointments in the system</p>
+      </div>
+      <div class="header-actions">
+        <button class="secondary-btn" (click)="goToDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button class="primary-btn" (click)="goToAnalytics()">
+          <mat-icon>analytics</mat-icon>
+          Analytics
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading appointments...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && !errorMessage" class="appointments-content">
+      <div *ngIf="appointments.length === 0" class="empty-state">
+        <mat-icon>event_busy</mat-icon>
+        <p>No appointments found in the system</p>
+      </div>
+
+      <div *ngIf="appointments.length > 0" class="appointments-grid">
+        <div class="appointment-card" *ngFor="let appointment of appointments">
+          <div class="card-header">
+            <div class="donor-info">
+              <mat-icon>person</mat-icon>
+              <span>{{ appointment.donor?.name || 'Unknown Donor' }}</span>
+            </div>
+            <span class="status-badge" [ngClass]="getStatusClass(appointment.status)">{{ appointment.status }}</span>
+          </div>
+          
+          <div class="card-body">
+            <div class="appointment-detail">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ appointment.date }}</span>
+            </div>
+            <div class="appointment-detail">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ appointment.time }}</span>
+            </div>
+            <div class="appointment-detail">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ appointment.bloodCenter }}</span>
+            </div>
+            <div class="appointment-detail" *ngIf="appointment.donor?.bloodGroup">
+              <mat-icon>bloodtype</mat-icon>
+              <span>{{ appointment.donor.bloodGroup }}</span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button class="cancel-btn" (click)="cancelAppointment(appointment.id!)"
+                    [disabled]="appointment.status === 'CANCELLED' || appointment.status === 'COMPLETED'">
+              <mat-icon>cancel</mat-icon>
+              Cancel Appointment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

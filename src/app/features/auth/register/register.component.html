@@ -1,0 +1,77 @@
+<div class="auth-shell">
+  <section class="auth-hero">
+    <div class="hero-badge">Community-driven care</div>
+    <h1>Join the network that helps hospitals and donors respond faster.</h1>
+    <p>Create your account to post urgent requests, receive guidance, or volunteer as a donor in your area.</p>
+    <div class="hero-stats">
+      <div class="stat-pill"><strong>Secure</strong><span>role-based access</span></div>
+      <div class="stat-pill"><strong>Fast</strong><span>localized matching</span></div>
+      <div class="stat-pill"><strong>Visible</strong><span>mission tracking</span></div>
+    </div>
+  </section>
+
+  <mat-card class="auth-card">
+    <div class="auth-card-header">
+      <div class="logo-icon">🩸</div>
+      <h2>Create your account</h2>
+      <p>Start helping within minutes.</p>
+    </div>
+
+    <mat-card-content>
+      <form (submit)="onRegister()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Full Name</mat-label>
+          <input matInput [(ngModel)]="name" name="name" type="text" placeholder="Your Name" required />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input matInput [(ngModel)]="email" name="email" type="email" placeholder="name@example.com" required />
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Blood Group</mat-label>
+            <mat-select [(ngModel)]="bloodGroup" name="bloodGroup" required>
+              <mat-option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>City Location</mat-label>
+            <input matInput [(ngModel)]="city" name="city" type="text" placeholder="e.g., Malappuram" required />
+            <mat-icon matSuffix>location_on</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Account Purpose</mat-label>
+          <mat-select [(ngModel)]="role" name="role" required>
+            <mat-option value="DONOR">Become a Blood Donor</mat-option>
+            <mat-option value="REQUESTER">Blood Requester (Patient/Hospital)</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>assignment_ind</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="password" name="password" required />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <p class="error-msg" *ngIf="errorMessage">⚠️ {{errorMessage}}</p>
+        <p class="success-msg" *ngIf="successMessage">✅ {{successMessage}}</p>
+
+        <button mat-flat-button color="warn" type="submit" class="login-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Creating account...' : 'Create account' }}
+        </button>
+      </form>
+    </mat-card-content>
+
+    <mat-card-footer class="login-footer">
+      <p>Already have an account? <a (click)="goToLogin()">Login here</a></p>
+    </mat-card-footer>
+  </mat-card>
+</div>

@@ -1,0 +1,151 @@
+<div class="analytics-page">
+  <div class="page-shell">
+    <div class="page-header">
+      <div>
+        <h2>Request Analytics</h2>
+        <p class="text-muted">Track your blood request performance and insights</p>
+      </div>
+      <div class="header-actions">
+        <button class="secondary-btn" (click)="goToDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button class="primary-btn" (click)="goToCreate()">
+          <mat-icon>add_circle</mat-icon>
+          New Request
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading analytics data...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && !errorMessage" class="analytics-content">
+      <!-- Request Statistics -->
+      <div class="card-surface analytics-card">
+        <div class="card-header">
+          <h4>Request Statistics</h4>
+          <mat-icon>analytics</mat-icon>
+        </div>
+        <div class="analytics-body">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon total">
+                <mat-icon>list_alt</mat-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ requestData.totalRequests || 0 }}</div>
+                <div class="stat-label">Total Requests</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon completed">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ requestData.completedRequests || 0 }}</div>
+                <div class="stat-label">Completed</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon pending">
+                <mat-icon>pending</mat-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ requestData.pendingRequests || 0 }}</div>
+                <div class="stat-label">Pending</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon cancelled">
+                <mat-icon>cancel</mat-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ requestData.cancelledRequests || 0 }}</div>
+                <div class="stat-label">Cancelled</div>
+              </div>
+            </div>
+          </div>
+          <div class="fulfillment-rate">
+            <div class="rate-label">Fulfillment Rate</div>
+            <div class="rate-value">{{ requestData.fulfillmentRate?.toFixed(1) || 0 }}%</div>
+            <div class="rate-bar">
+              <div class="rate-fill" [style.width.%]="requestData.fulfillmentRate || 0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blood Group Distribution -->
+      <div class="card-surface analytics-card">
+        <div class="card-header">
+          <h4>Blood Group Distribution</h4>
+          <mat-icon>bloodtype</mat-icon>
+        </div>
+        <div class="analytics-body">
+          <div class="blood-group-list">
+            <div class="blood-group-item" *ngFor="let item of (requestData.bloodGroupDistribution | keyvalue)">
+              <span class="blood-group-badge" [ngClass]="getBloodGroupClass(toString(item.key))">{{ item.key }}</span>
+              <span class="blood-group-count">{{ item.value }} requests</span>
+              <div class="blood-group-bar">
+                <div class="bar-fill" [style.width.%]="requestData.totalRequests ? (item.value / requestData.totalRequests) * 100 : 0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Urgency Distribution -->
+      <div class="card-surface analytics-card">
+        <div class="card-header">
+          <h4>Urgency Distribution</h4>
+          <mat-icon>priority_high</mat-icon>
+        </div>
+        <div class="analytics-body">
+          <div class="urgency-list">
+            <div class="urgency-item" *ngFor="let item of requestData.urgencyDistribution | keyvalue">
+              <span class="urgency-badge urgency-{{ toLowerCase(item.key) }}">{{ item.key }}</span>
+              <span class="urgency-count">{{ item.value }} requests</span>
+              <div class="urgency-bar">
+                <div class="bar-fill" [style.width.%]="requestData.totalRequests ? (item.value / requestData.totalRequests) * 100 : 0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Requests -->
+      <div class="card-surface analytics-card">
+        <div class="card-header">
+          <h4>Recent Requests</h4>
+          <mat-icon>history</mat-icon>
+        </div>
+        <div class="analytics-body">
+          <div *ngIf="!requestData.recentRequests || requestData.recentRequests.length === 0" class="empty-state">
+            <mat-icon>inbox</mat-icon>
+            <p>No recent requests</p>
+          </div>
+          <div *ngIf="requestData.recentRequests && requestData.recentRequests.length > 0" class="recent-list">
+            <div class="recent-item" *ngFor="let request of requestData.recentRequests">
+              <div class="recent-info">
+                <div class="recent-patient">{{ request.patientName }}</div>
+                <div class="recent-details">
+                  <span class="blood-group-badge" [ngClass]="getBloodGroupClass(request.bloodGroup)">{{ request.bloodGroup }}</span>
+                  <span class="recent-hospital">{{ request.hospital }}</span>
+                </div>
+              </div>
+              <span class="status-badge" [ngClass]="getStatusClass(request.status)">{{ request.status }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

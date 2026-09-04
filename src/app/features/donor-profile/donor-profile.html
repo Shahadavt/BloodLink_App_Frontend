@@ -1,0 +1,123 @@
+<div class="donor-profile-page">
+  <div class="page-shell">
+    <div class="page-header">
+      <div>
+        <h2>My Profile</h2>
+        <p class="text-muted">Manage your donor information and availability</p>
+      </div>
+      <div class="header-actions">
+        <button class="secondary-btn" (click)="goToDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button class="primary-btn" (click)="goToHistory()">
+          <mat-icon>history</mat-icon>
+          Donation History
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading profile...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && !errorMessage && profile" class="profile-content">
+      <div class="card-surface profile-card">
+        <div class="profile-header">
+          <div class="avatar-circle large">{{ profile.name.charAt(0) }}</div>
+          <div class="profile-info">
+            <h3>{{ profile.name }}</h3>
+            <p class="text-muted">{{ profile.email }}</p>
+            <span class="role-badge">{{ profile.role }}</span>
+          </div>
+          <div class="availability-toggle">
+            <label class="switch">
+              <input type="checkbox" [checked]="profile.available" (change)="toggleAvailability()">
+              <span class="slider"></span>
+            </label>
+            <span class="availability-label">
+              {{ profile.available ? 'Available' : 'Unavailable' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-row">
+            <label>Blood Group:</label>
+            <span class="blood-group-badge" [ngClass]="getBloodGroupClass(profile.bloodGroup)">{{ profile.bloodGroup || 'Not set' }}</span>
+          </div>
+          <div class="detail-row">
+            <label>City:</label>
+            <span>{{ profile.city || 'Not set' }}</span>
+          </div>
+          <div class="detail-row">
+            <label>Status:</label>
+            <span class="status-badge" [ngClass]="profile.active ? 'active' : 'inactive'">
+              {{ profile.active ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <button *ngIf="!editing" class="primary-btn" (click)="startEditing()">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+          <ng-container *ngIf="editing">
+            <button class="secondary-btn" (click)="cancelEditing()">
+              <mat-icon>cancel</mat-icon>
+              Cancel
+            </button>
+            <button class="primary-btn" (click)="saveProfile()">
+              <mat-icon>save</mat-icon>
+              Save Changes
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+      <div *ngIf="editing" class="card-surface edit-form">
+        <h4>Edit Profile</h4>
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" [(ngModel)]="editProfile.name" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Blood Group:</label>
+          <select [(ngModel)]="editProfile.bloodGroup" class="form-control">
+            <option value="">Select Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>City:</label>
+          <input type="text" [(ngModel)]="editProfile.city" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>New Password (leave blank to keep current):</label>
+          <input type="password" [(ngModel)]="editProfile.password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Active Status:</label>
+          <select [(ngModel)]="editProfile.active" (change)="onDropdownChange($event)" class="form-control">
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

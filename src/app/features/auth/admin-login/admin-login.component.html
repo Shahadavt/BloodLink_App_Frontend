@@ -1,0 +1,57 @@
+<div class="admin-auth-shell">
+  <section class="admin-auth-hero">
+    <div class="admin-hero-badge">Admin Portal</div>
+    <h1>System Administration</h1>
+    <p>Manage users, monitor requests, and control platform settings from one secure admin dashboard.</p>
+    <div class="admin-features">
+      <div class="admin-feature">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span>User Management</span>
+      </div>
+      <div class="admin-feature">
+        <mat-icon>analytics</mat-icon>
+        <span>Request Monitoring</span>
+      </div>
+      <div class="admin-feature">
+        <mat-icon>security</mat-icon>
+        <span>Platform Security</span>
+      </div>
+    </div>
+  </section>
+  
+  <mat-card class="admin-auth-card">
+    <mat-card-header>
+      <div class="admin-card-icon">
+        <mat-icon>shield</mat-icon>
+      </div>
+      <mat-card-title>Admin Login</mat-card-title>
+      <mat-card-subtitle>Secure access for administrators only</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form (submit)="onLogin()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Admin Email</mat-label>
+          <input matInput [(ngModel)]="email" name="email" type="email" placeholder="admin@bloodbank.com" required />
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Admin Password</mat-label>
+          <input matInput [(ngModel)]="password" name="password" type="password" placeholder="••••••••" required />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+        
+        <p class="error-msg" *ngIf="errorMessage">⚠️ {{errorMessage}}</p>
+        
+        <button mat-flat-button color="warn" class="admin-login-btn" type="submit" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Authenticating...' : 'Admin Login' }}
+        </button>
+      </form>
+    </mat-card-content>
+    
+    <mat-card-footer class="admin-login-footer">
+      <p>Not an admin? <a (click)="goToRegularLogin()">Go to regular login</a></p>
+    </mat-card-footer>
+  </mat-card>
+</div>

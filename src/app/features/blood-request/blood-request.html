@@ -1,0 +1,75 @@
+<div class="request-shell">
+  <div class="request-card">
+    <div class="request-header">
+      <div class="icon-circle">🩸</div>
+      <div>
+        <div class="eyebrow">{{ isEditing ? 'Update request' : 'Emergency intake' }}</div>
+        <h2>{{ isEditing ? 'Edit blood request' : 'Request blood support' }}</h2>
+        <p>{{ isEditing ? 'Update your blood request details.' : 'Notify donors and nearby teams with a clear, actionable request.' }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-overlay">
+      <p>Loading...</p>
+    </div>
+
+    <div class="form-body" *ngIf="!loading">
+      <div class="input-grid">
+        <div class="input-group">
+          <label for="pName">Patient full name</label>
+          <input id="pName" type="text" placeholder="e.g., Jane Cooper" [(ngModel)]="request.patientName" name="patientName">
+        </div>
+
+        <div class="input-group">
+          <label for="bGroup">Blood group</label>
+          <select id="bGroup" [(ngModel)]="request.bloodGroup" name="bloodGroup">
+            <option value="">Select category</option>
+            <option *ngFor="let g of ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']" [value]="g">{{g}}</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="hosp">Hospital name</label>
+          <input id="hosp" type="text" placeholder="City General Hospital" [(ngModel)]="request.hospital" name="hospital">
+        </div>
+
+        <div class="input-group">
+          <label for="city">City</label>
+          <input id="city" type="text" placeholder="e.g., London" [(ngModel)]="request.city" name="city">
+        </div>
+
+        <div class="input-group">
+          <label for="units">Units needed</label>
+          <input id="units" type="number" min="1" [(ngModel)]="request.unitsRequired" name="unitsRequired">
+        </div>
+
+        <div class="input-group">
+          <label for="urgency">Urgency level</label>
+          <select id="urgency" [(ngModel)]="request.urgency" name="urgency">
+            <option value="NORMAL">Normal</option>
+            <option value="URGENT">Urgent</option>
+            <option value="CRITICAL">Critical</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="phone">Emergency contact</label>
+          <input id="phone" type="text" placeholder="07123 456789" [(ngModel)]="request.contactNumber" name="contactNumber">
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-secondary" (click)="cancel()" [disabled]="isSubmitting">Cancel</button>
+        <button class="btn-submit" (click)="submitRequest()" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Processing...' : (isEditing ? 'Update request' : 'Broadcast request') }}
+        </button>
+      </div>
+
+      @if (message) {
+        <div class="status-toast" [class.error]="isError">
+          {{ message }}
+        </div>
+      }
+    </div>
+  </div>
+</div>

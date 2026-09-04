@@ -1,0 +1,247 @@
+:host {
+  display: block;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: var(--secondary);
+}
+
+.auth-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.5rem;
+  color: var(--text-primary);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.auth-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0 0 0.625rem;
+  font-weight: 700;
+}
+
+.auth-hero p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 33.75rem;
+  margin-bottom: 1rem;
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  min-width: 7.5rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--radius);
+  background: white;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-pill strong {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.stat-pill span {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.small-row {
+  margin: 0.375rem 0 0.5rem;
+  font-size: 0.875rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.link-muted {
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-card {
+  width: min(27.5rem, 92%);
+  margin: auto;
+  padding: 1.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+  background: white;
+}
+
+.auth-card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-card-header h2 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.auth-card-header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 1.375rem !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  margin-top: 0.625rem;
+  border-radius: var(--radius-full) !important;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+
+.login-btn:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
+}
+
+.login-btn:active:not([disabled]) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #94a3b8 !important;
+  box-shadow: none;
+}
+
+.error-msg {
+  color: var(--danger);
+  text-align: center;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: var(--danger-light);
+  border-radius: var(--radius);
+  border: 1px solid var(--danger);
+}
+
+.login-footer {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  margin-top: 1.125rem;
+}
+
+.login-footer p {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.login-footer a {
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+.admin-link {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.admin-link a {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.admin-link a:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 960px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-hero {
+    padding: 2.25rem 1.5rem 0.5rem;
+  }
+
+  .auth-card {
+    margin: 1rem auto 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-hero {
+    padding: 1.5rem 1rem 0.5rem;
+  }
+
+  .auth-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .stat-pill {
+    min-width: 5rem;
+  }
+
+  .auth-card {
+    padding: 1.25rem;
+  }
+}
